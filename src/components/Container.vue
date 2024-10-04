@@ -110,19 +110,18 @@
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
-  padding: 0px 20px;
-  border: solid 0.5px grey;
+  padding-left: 20px;
+  border: solid 1px grey;
   border-radius: 4px;
   background-color: white;
 }
 
 .search-input {
-  /* padding: 8px 40px 8px 10px; */
   font-size: 16px;
   width: inherit;
   height: inherit;
   outline: none;
-  border: none;
+  /* border: none; */
   /* border: 1px solid #ccc; */
   /* border-radius: 4px; */
   /* box-sizing: border-box; */
