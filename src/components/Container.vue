@@ -3,8 +3,8 @@
     <div class="controls">
       <!-- Search Input with Icon -->
       <div class="search-container">
-        <input v-model="searchQuery" type="text" placeholder="Search customers..." class="search-input" />
         <img src="https://img.icons8.com/ios/50/000000/search.png" alt="Search Icon" class="search-icon" />
+        <input v-model="searchQuery" type="text" placeholder="Search customers..." class="search-input" />
       </div>
 
       <!-- Sort Dropdown -->
@@ -196,7 +196,7 @@
 }
 
 .username {
-  margin-top: 4px;
+  margin-top: 2px;
   font-size: 14px;
   font-weight: normal;
   color: #666;
@@ -243,6 +243,7 @@
 @media (max-width: 768px) {
   .container {
     display: flex;
+    justify-content: space-around;
     flex-direction: row-reverse !important;
   }
 
