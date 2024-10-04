@@ -1,6 +1,7 @@
 <template>
   <div class="app">
     <div class="controls">
+      <!-- Search Input -->
       <input v-model="searchQuery" type="text" placeholder="Search by name..." class="search-input" />
 
       <!-- Sort Dropdown -->
@@ -44,6 +45,30 @@
   gap: 10px;
   margin-bottom: 20px;
   position: relative;
+  flex-wrap: wrap;
+}
+
+/* For mobile - Stack the input and dropdown vertically */
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sort-dropdown {
+    align-self: flex-end;
+    /* Align the dropdown to the right */
+    margin-top: 10px;
+    /* Add some spacing between the search input and the dropdown */
+  }
+}
+
+/* For desktop - Align search input and dropdown side by side */
+@media (min-width: 769px) {
+  .controls {
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 /* Search Input Styling */
@@ -63,7 +88,6 @@
   border-radius: 4px;
   cursor: pointer;
   min-width: 160px;
-  /* Ensures the dropdown and search input are aligned */
 }
 
 /* Flex container for the customer cards */
@@ -133,17 +157,6 @@
     max-width: calc(25% - 20px);
     /* 4 cards per row */
   }
-
-  /* Desktop specific search button styling */
-  .search-input {
-    width: 548px;
-    height: 52px;
-    position: absolute;
-    top: 168px;
-    left: 166px;
-    gap: 3px;
-    opacity: 0;
-  }
 }
 
 .no-results {
@@ -152,8 +165,6 @@
   color: #888;
 }
 </style>
-
-
 
 <script>
 import { ref, computed, onMounted } from "vue";
@@ -182,21 +193,20 @@ export default {
       }
     };
 
-    // Filtered customers based on search query
+    // Filtered customers based on search query and sorting option
     const filteredCustomers = computed(() => {
-      return customers.value
-        .filter((customer) =>
-          customer.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-        )
-        .sort((a, b) => {
-          // Handle sorting based on the sortOption value
-          if (sortOption.value === "asc") {
-            return a.name.localeCompare(b.name);
-          } else if (sortOption.value === "desc") {
-            return b.name.localeCompare(a.name);
-          }
-          return 0; // No sorting if 'default' is selected
-        });
+      let filtered = customers.value.filter((customer) =>
+        customer.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+      );
+
+      // Apply sorting based on the selected option
+      if (sortOption.value === "asc") {
+        filtered = filtered.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (sortOption.value === "desc") {
+        filtered = filtered.sort((a, b) => b.name.localeCompare(a.name));
+      }
+
+      return filtered;
     });
 
     // Fetch customers on mounted
