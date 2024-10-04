@@ -138,7 +138,7 @@
   /* transform: translateY(-50%); */
   width: 24px;
   height: 24px;
-  color: yellow;
+  color: white;
 }
 
 .sort-dropdown {
@@ -232,11 +232,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 16px;
+  /* margin-top: 16px; */
+  margin-bottom: 15px;
 }
 
 .contact-item {
+  padding-left: 10px;
   display: flex;
+  align-items: center;
   text-align: left;
   font-size: 16px;
   font-weight: 400;
@@ -248,13 +251,14 @@
 }
 
 .contact-icon {
-  width: 25px;
-  height: 25px;
+  width: 15px;
+  height: 15px;
   color: #51C5FF;
 }
 
 .separator {
-  margin-top: 4px;
+  /* margin-top: 4px; */
+  margin-bottom: 10px;
   border: 0;
   border-top: 1px solid #ddd;
 }
@@ -262,7 +266,7 @@
 @media (max-width: 768px) {
   .container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-direction: row-reverse !important;
   }
 
@@ -289,6 +293,10 @@
   .search-container {
     width: 548px;
     height: 52px;
+  }
+
+  .separator {
+    display: none;
   }
 }
 
