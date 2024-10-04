@@ -113,7 +113,7 @@
   gap: 10px;
   padding-left: 20px;
   border: solid 1px grey;
-  border-radius: 4px;
+  border-radius: 10px;
   background-color: white;
 }
 
