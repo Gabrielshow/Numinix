@@ -15,7 +15,6 @@
     <!-- Customer Cards -->
     <div v-if="filteredCustomers.length > 0" class="customer-grid">
       <div v-for="customer in filteredCustomers" :key="customer.id" class="customer-card">
-        <!-- Profile Image -->
         <img :src="customer.avatar" alt="Profile Image" class="profile-img" />
 
         <!-- Customer Details -->
@@ -34,12 +33,10 @@
 </template>
 
 <style scoped>
-/* Container for the app */
 .app {
   padding: 20px;
 }
 
-/* Input and button for search and sort controls */
 .controls {
   display: flex;
   gap: 10px;
@@ -48,7 +45,6 @@
   flex-wrap: wrap;
 }
 
-/* For mobile - Stack the input and dropdown vertically */
 @media (max-width: 768px) {
   .controls {
     flex-direction: column;
@@ -57,13 +53,10 @@
 
   .sort-dropdown {
     align-self: flex-end;
-    /* Align the dropdown to the right */
     margin-top: 10px;
-    /* Add some spacing between the search input and the dropdown */
   }
 }
 
-/* For desktop - Align search input and dropdown side by side */
 @media (min-width: 769px) {
   .controls {
     justify-content: space-between;
@@ -71,7 +64,6 @@
   }
 }
 
-/* Search Input Styling */
 .search-input {
   padding: 8px;
   font-size: 16px;
@@ -80,7 +72,6 @@
   border-radius: 4px;
 }
 
-/* Sort Dropdown Styling */
 .sort-dropdown {
   padding: 8px;
   font-size: 16px;
@@ -90,7 +81,6 @@
   min-width: 160px;
 }
 
-/* Flex container for the customer cards */
 .customer-grid {
   display: flex;
   flex-wrap: wrap;
@@ -98,7 +88,6 @@
   justify-content: center;
 }
 
-/* Styling for each customer card */
 .customer-card {
   width: 100%;
   max-width: 250px;
@@ -110,19 +99,16 @@
   transition: transform 0.3s ease-in-out;
 }
 
-/* Add a hover effect for the card */
 .customer-card:hover {
   transform: scale(1.05);
 }
 
-/* Profile image styling */
 .profile-img {
   width: 100%;
   height: 200px;
   object-fit: cover;
 }
 
-/* Styling for the customer info inside the card */
 .customer-info {
   padding: 16px;
   text-align: center;
@@ -141,7 +127,6 @@
   color: #555;
 }
 
-/* Responsive styles */
 @media (max-width: 768px) {
   .customer-card {
     max-width: 100%;
@@ -155,7 +140,6 @@
 @media (min-width: 769px) {
   .customer-card {
     max-width: calc(25% - 20px);
-    /* 4 cards per row */
   }
 }
 
@@ -176,14 +160,11 @@ export default {
     const searchQuery = ref("");
     const sortOption = ref("default"); // New state to manage the sort option
     const api = "https://jsonplaceholder.typicode.com/users";
-
-    // Fetch customer data from JSONPlaceholder API
     const fetchCustomers = async () => {
       try {
         const response = await fetch(api);
         const data = await response.json();
 
-        // Add fake profile images using Faker.js or another source
         customers.value = data.map((customer) => ({
           ...customer,
           avatar: `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`,
@@ -193,13 +174,11 @@ export default {
       }
     };
 
-    // Filtered customers based on search query and sorting option
     const filteredCustomers = computed(() => {
       let filtered = customers.value.filter((customer) =>
         customer.name.toLowerCase().includes(searchQuery.value.toLowerCase())
       );
 
-      // Apply sorting based on the selected option
       if (sortOption.value === "asc") {
         filtered = filtered.sort((a, b) => a.name.localeCompare(b.name));
       } else if (sortOption.value === "desc") {
@@ -209,14 +188,13 @@ export default {
       return filtered;
     });
 
-    // Fetch customers on mounted
     onMounted(fetchCustomers);
 
     return {
       customers,
       searchQuery,
       filteredCustomers,
-      sortOption, // Bind the sort option to the dropdown
+      sortOption,
     };
   },
 };
