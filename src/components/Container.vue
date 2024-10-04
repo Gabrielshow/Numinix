@@ -1,8 +1,11 @@
 <template>
   <div class="app">
     <div class="controls">
-      <!-- Search Input -->
-      <input v-model="searchQuery" type="text" placeholder="Search by name..." class="search-input" />
+      <!-- Search Input with Icon -->
+      <div class="search-container">
+        <input v-model="searchQuery" type="text" placeholder="Search customers..." class="search-input" />
+        <img src="https://img.icons8.com/ios/50/000000/search.png" alt="Search Icon" class="search-icon" />
+      </div>
 
       <!-- Sort Dropdown -->
       <select v-model="sortOption" @change="sortCustomers" class="sort-dropdown">
@@ -16,40 +19,47 @@
     <div v-if="filteredCustomers.length > 0" class="customer-grid">
       <div v-for="customer in filteredCustomers" :key="customer.id" class="customer-card">
         <!-- Profile Image -->
-        <img :src="customer.avatar" alt="Profile Image" class="profile-img" />
+        <div class="container">
 
-        <!-- Customer Details -->
-        <div class="customer-info">
-          <!-- Name and Username -->
-          <h3 class="name-username">{{ customer.name }}</h3>
-          <p class="username">@{{ customer.username }}</p>
-          <p class="description">"{{ customer.company.catchPhrase }}"</p>
+          <img :src="customer.avatar" alt="Profile Image" class="profile-img" />
 
-          <div class="customer-contact">
-            <div class="contact-item">
-              <img src="https://img.icons8.com/ios/50/000000/email.png" alt="Email Icon" class="contact-icon" />
-              <p>{{ customer.email }}</p>
-            </div>
-            <div class="contact-item">
-              <img src="https://img.icons8.com/ios/50/000000/marker.png" alt="Location Icon" class="contact-icon" />
-              <p>{{ customer.address.street }}, {{ customer.address.city }}</p>
-            </div>
-            <div class="contact-item">
-              <img src="https://img.icons8.com/ios/50/000000/phone.png" alt="Phone Icon" class="contact-icon" />
-              <p>{{ customer.phone }}</p>
-            </div>
-            <div class="contact-item">
-              <img src="https://img.icons8.com/ios/50/000000/domain.png" alt="Website Icon" class="contact-icon" />
-              <p>{{ customer.website }}</p>
-            </div>
-            <div class="contact-item">
-              <img src="https://img.icons8.com/ios/50/000000/briefcase.png" alt="Company Icon" class="contact-icon" />
-              <p>{{ customer.company.name }}</p>
-            </div>
-            <div class="contact-item">
-              <img src="https://img.icons8.com/ios/50/000000/factory.png" alt="Factory Icon" class="contact-icon" />
-              <p>{{ customer.company.bs }}</p>
-            </div>
+          <!-- Customer Details -->
+          <div class="customer-info">
+            <!-- Name and Username -->
+            <h3 class="name-username">{{ customer.name }}</h3>
+            <p class="username">@{{ customer.username }}</p>
+            <p class="description">"{{ customer.company.catchPhrase }}"</p>
+          </div>
+        </div>
+
+        <!-- Add HR separator in mobile view -->
+        <hr v-if="isMobile" class="separator" />
+
+        <!-- Contact Info with Icons -->
+        <div class="customer-contact">
+          <div class="contact-item">
+            <img src="https://img.icons8.com/ios/50/000000/email.png" alt="Email Icon" class="contact-icon" />
+            <p>{{ customer.email }}</p>
+          </div>
+          <div class="contact-item">
+            <img src="https://img.icons8.com/ios/50/000000/marker.png" alt="Location Icon" class="contact-icon" />
+            <p>{{ customer.address.street }}, {{ customer.address.city }}</p>
+          </div>
+          <div class="contact-item">
+            <img src="https://img.icons8.com/ios/50/000000/phone.png" alt="Phone Icon" class="contact-icon" />
+            <p>{{ customer.phone }}</p>
+          </div>
+          <div class="contact-item">
+            <img src="https://img.icons8.com/ios/50/000000/domain.png" alt="Website Icon" class="contact-icon" />
+            <p>{{ customer.website }}</p>
+          </div>
+          <div class="contact-item">
+            <img src="https://img.icons8.com/ios/50/000000/briefcase.png" alt="Company Icon" class="contact-icon" />
+            <p>{{ customer.company.name }}</p>
+          </div>
+          <div class="contact-item">
+            <img src="https://img.icons8.com/ios/50/000000/factory.png" alt="Factory Icon" class="contact-icon" />
+            <p>{{ customer.company.bs }}</p>
           </div>
         </div>
       </div>
@@ -92,21 +102,56 @@
   }
 }
 
+.search-container {
+  position: relative;
+}
+
 .search-input {
-  padding: 8px;
+  padding: 8px 40px 8px 10px;
   font-size: 16px;
   width: 200px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  color: #666;
 }
 
 .sort-dropdown {
-  padding: 8px;
+  /* padding: 8px; */
+  gap: 24px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
   min-width: 160px;
+  width: 192px;
+  height: 20px;
+}
+
+.sort-dropdown option {
+  font-size: 16px;
+}
+
+.sort-dropdown option:first-child {
+  font-weight: bold;
+}
+
+.sort-dropdown {
+  height: 20px;
+}
+
+.sort-dropdown:focus {
+  height: 20px;
+  width:
 }
 
 .customer-grid {
@@ -176,6 +221,7 @@
   display: flex;
   text-align: left;
   font-size: 16px;
+  font-weight: 400;
   gap: 6px;
   font-size: 14px;
   color: #555;
@@ -183,12 +229,29 @@
 }
 
 .contact-icon {
-  width: 18px;
-  height: 18px;
-  color: blue;
+  width: 25px;
+  height: 25px;
+  color: #51C5FF;
+}
+
+.separator {
+  margin-top: 4px;
+  border: 0;
+  border-top: 1px solid #ddd;
 }
 
 @media (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: row-reverse !important;
+  }
+
+  .profile-img {
+    border-radius: 50%;
+    width: 105px;
+    height: 109px;
+  }
+
   .customer-card {
     max-width: 100%;
   }
@@ -221,6 +284,7 @@ export default {
     const searchQuery = ref("");
     const sortOption = ref("default"); // New state to manage the sort option
     const api = "https://jsonplaceholder.typicode.com/users";
+    const isMobile = computed(() => window.innerWidth <= 768);
 
     // Fetch customer data from JSONPlaceholder API
     const fetchCustomers = async () => {
@@ -258,6 +322,7 @@ export default {
       searchQuery,
       filteredCustomers,
       sortOption,
+      isMobile,
     };
   },
 };
