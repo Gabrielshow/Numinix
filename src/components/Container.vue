@@ -2,7 +2,13 @@
   <div class="app">
     <div class="controls">
       <input v-model="searchQuery" type="text" placeholder="Search by name..." class="search-input" />
-      <button @click="sortCustomers" class="sort-button">Sort Alphabetically</button>
+
+      <!-- Sort Dropdown -->
+      <select v-model="sortOption" @change="sortCustomers" class="sort-dropdown">
+        <option value="default">Filter by name</option>
+        <option value="asc">Name (A-Z)</option>
+        <option value="desc">Name (Z-A)</option>
+      </select>
     </div>
 
     <!-- Customer Cards -->
@@ -26,7 +32,6 @@
   </div>
 </template>
 
-
 <style scoped>
 /* Container for the app */
 .app {
@@ -38,8 +43,10 @@
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  position: relative;
 }
 
+/* Search Input Styling */
 .search-input {
   padding: 8px;
   font-size: 16px;
@@ -48,17 +55,15 @@
   border-radius: 4px;
 }
 
-.sort-button {
-  padding: 8px 16px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
+/* Sort Dropdown Styling */
+.sort-dropdown {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
-}
-
-.sort-button:hover {
-  background-color: #45a049;
+  min-width: 160px;
+  /* Ensures the dropdown and search input are aligned */
 }
 
 /* Flex container for the customer cards */
@@ -128,6 +133,17 @@
     max-width: calc(25% - 20px);
     /* 4 cards per row */
   }
+
+  /* Desktop specific search button styling */
+  .search-input {
+    width: 548px;
+    height: 52px;
+    position: absolute;
+    top: 168px;
+    left: 166px;
+    gap: 3px;
+    opacity: 0;
+  }
 }
 
 .no-results {
@@ -137,45 +153,51 @@
 }
 </style>
 
+
+
 <script>
 import { ref, computed, onMounted } from "vue";
-import { faker } from "@faker-js/faker";
 
 export default {
   name: "App",
   setup() {
     const customers = ref([]);
     const searchQuery = ref("");
+    const sortOption = ref("default"); // New state to manage the sort option
     const api = "https://jsonplaceholder.typicode.com/users";
 
     // Fetch customer data from JSONPlaceholder API
     const fetchCustomers = async () => {
       try {
-        const response = await fetch(api);  // Fetch customer data from JSONPlaceholder API
+        const response = await fetch(api);
         const data = await response.json();
 
-        // Use a fallback placeholder avatar in case RandomUser.me URL doesn't work
+        // Add fake profile images using Faker.js or another source
         customers.value = data.map((customer) => ({
           ...customer,
-          avatar: `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg` || 'https://via.placeholder.com/150', // Fallback to a placeholder image
+          avatar: `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`,
         }));
       } catch (error) {
         console.error("Error fetching customer data:", error);
       }
     };
 
-
     // Filtered customers based on search query
     const filteredCustomers = computed(() => {
-      return customers.value.filter((customer) =>
-        customer.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-      );
+      return customers.value
+        .filter((customer) =>
+          customer.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+        )
+        .sort((a, b) => {
+          // Handle sorting based on the sortOption value
+          if (sortOption.value === "asc") {
+            return a.name.localeCompare(b.name);
+          } else if (sortOption.value === "desc") {
+            return b.name.localeCompare(a.name);
+          }
+          return 0; // No sorting if 'default' is selected
+        });
     });
-
-    // Sort customers alphabetically by name
-    const sortCustomers = () => {
-      customers.value.sort((a, b) => a.name.localeCompare(b.name));
-    };
 
     // Fetch customers on mounted
     onMounted(fetchCustomers);
@@ -184,7 +206,7 @@ export default {
       customers,
       searchQuery,
       filteredCustomers,
-      sortCustomers,
+      sortOption, // Bind the sort option to the dropdown
     };
   },
 };
