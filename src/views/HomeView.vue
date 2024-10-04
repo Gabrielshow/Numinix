@@ -1,9 +1,9 @@
 <script setup>
-import AppNavbar from '../components/AppNavbar.vue';
+import Container from '../components/Container.vue';
 </script>
 
 <template>
   <main>
-    <AppNavbar/>
+    <Container />
   </main>
 </template>
