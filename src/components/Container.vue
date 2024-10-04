@@ -15,14 +15,42 @@
     <!-- Customer Cards -->
     <div v-if="filteredCustomers.length > 0" class="customer-grid">
       <div v-for="customer in filteredCustomers" :key="customer.id" class="customer-card">
+        <!-- Profile Image -->
         <img :src="customer.avatar" alt="Profile Image" class="profile-img" />
 
         <!-- Customer Details -->
         <div class="customer-info">
-          <h3>{{ customer.name }}</h3>
-          <p>{{ customer.email }}</p>
-          <p>{{ customer.phone }}</p>
-          <p>{{ customer.address.street }}, {{ customer.address.city }}</p>
+          <!-- Name and Username -->
+          <h3 class="name-username">{{ customer.name }}</h3>
+          <p class="username">@{{ customer.username }}</p>
+          <p class="description">"{{ customer.company.catchPhrase }}"</p>
+
+          <div class="customer-contact">
+            <div class="contact-item">
+              <img src="https://img.icons8.com/ios/50/000000/email.png" alt="Email Icon" class="contact-icon" />
+              <p>{{ customer.email }}</p>
+            </div>
+            <div class="contact-item">
+              <img src="https://img.icons8.com/ios/50/000000/marker.png" alt="Location Icon" class="contact-icon" />
+              <p>{{ customer.address.street }}, {{ customer.address.city }}</p>
+            </div>
+            <div class="contact-item">
+              <img src="https://img.icons8.com/ios/50/000000/phone.png" alt="Phone Icon" class="contact-icon" />
+              <p>{{ customer.phone }}</p>
+            </div>
+            <div class="contact-item">
+              <img src="https://img.icons8.com/ios/50/000000/domain.png" alt="Website Icon" class="contact-icon" />
+              <p>{{ customer.website }}</p>
+            </div>
+            <div class="contact-item">
+              <img src="https://img.icons8.com/ios/50/000000/briefcase.png" alt="Company Icon" class="contact-icon" />
+              <p>{{ customer.company.name }}</p>
+            </div>
+            <div class="contact-item">
+              <img src="https://img.icons8.com/ios/50/000000/factory.png" alt="Factory Icon" class="contact-icon" />
+              <p>{{ customer.company.bs }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -114,17 +142,50 @@
   text-align: center;
 }
 
-.customer-info h3 {
+.name-username {
   margin: 0;
   font-size: 18px;
   font-weight: bold;
   color: #333;
+  text-align: left;
 }
 
-.customer-info p {
-  margin: 4px 0;
+.username {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: normal;
+  color: #666;
+  text-align: left;
+}
+
+.description {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #51C5FF;
+  text-align: left;
+}
+
+.customer-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.contact-item {
+  display: flex;
+  text-align: left;
+  font-size: 16px;
+  gap: 6px;
   font-size: 14px;
   color: #555;
+  width: 100%;
+}
+
+.contact-icon {
+  width: 18px;
+  height: 18px;
+  color: blue;
 }
 
 @media (max-width: 768px) {
@@ -160,6 +221,8 @@ export default {
     const searchQuery = ref("");
     const sortOption = ref("default"); // New state to manage the sort option
     const api = "https://jsonplaceholder.typicode.com/users";
+
+    // Fetch customer data from JSONPlaceholder API
     const fetchCustomers = async () => {
       try {
         const response = await fetch(api);
