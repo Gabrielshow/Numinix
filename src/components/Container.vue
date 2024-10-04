@@ -23,7 +23,7 @@
 <style scoped></style>
 
 <script>
-import Card from './Card.vue'
+// import Card from './Card.vue'
 import { ref, computed, onMounted } from "vue";
 import { faker } from "@faker-js/faker";
 
